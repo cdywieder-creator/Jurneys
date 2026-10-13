@@ -9,9 +9,10 @@
     "preview": "vite preview --host 0.0.0.0",
     "start": "node --env-file-if-exists=.env --use-env-proxy server.mjs",
     "visuals:generate": "node --env-file-if-exists=.env --use-env-proxy scripts/generate-visuals.mjs",
-    "test": "node --test tests/api.test.mjs",
+    "test": "node --test tests/api.test.mjs tests/timeline.test.mjs",
     "visuals:cutout": "node --env-file-if-exists=.env --use-env-proxy scripts/remove-background.mjs",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "visuals:film": "node --env-file-if-exists=.env --use-env-proxy scripts/generate-film.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.56.0",

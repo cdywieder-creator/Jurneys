@@ -1,63 +1,73 @@
 # JOURNEYS — THE TAKEOFF
 
-A responsive website studio portfolio: warm ivory, charcoal, amber, a Kie.ai-generated sculptural plane, and a scroll-controlled six-scene journey. Built with Vite, vanilla JavaScript and CSS, and a small Node.js inquiry API.
+A cinematic, scroll-controlled website studio portfolio. The page is a full-screen architectural flight sequence: scrolling advances or reverses the camera through an amber-lit gallery, and actual FillPack and MRBL websites enter the foreground as the work takes center stage.
+
+This rebuild replaces the earlier conventional portfolio layout and decorative paper-plane animation. The visual reference is https://sebastien-lempens.com/. JOURNEYS uses original Kie.ai-generated footage and its own compositions; none of the reference site's code, models, imagery, or audio is reused.
+
+## View in Replit
+
+Import `https://github.com/cdywieder-creator/Jurneys`, then press **Run** and open **Preview**. The included `.replit` file installs dependencies and starts Vite on port 5173. Node.js 22.12+ or 24+ is required to view the website. All film frames, fonts, and project screenshots are included; viewing needs no Kie.ai key.
+
+If you imported the previous version, pull the latest `main` branch through Replit's Git panel (or run `git pull origin main` in its Shell), then stop and restart **Run**.
 
 ## Run on your computer
 
-Install **Node.js 22.12+ or Node.js 24+**, extract the project, and open a terminal in the `Jurneys` directory:
+Open a terminal in the directory containing `package.json`:
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Open the local address printed by Vite. Changes in `src/main.js` and `src/style.css` update immediately. Stop the server with Ctrl+C. All fonts, screenshots and generated artwork are local; a Kie.ai key is not needed to view the website.
+Open the address printed by Vite. Changes update automatically. Stop with Ctrl+C.
 
-## View in Replit
+## The cinematic experience
 
-Import `https://github.com/cdywieder-creator/Jurneys` into Replit, then press **Run**. The included `.replit` configuration installs dependencies, starts Vite on port 5173, and maps it to the web Preview. Use Node.js 22.12+ or 24+. The included visuals work without supplying a Kie.ai key. Add credentials only to Replit Secrets if you intentionally regenerate artwork.
+The original 8-second Kie.ai film is served as 192 optimized WebP frames. A Canvas renderer maps native scroll progress to the footage, with brief camera easing. It does not intercept wheel/touch input, autoplay the footage, loop the plane, or play audio. Scrolling backwards reverses the scene; stopping holds the frame. The first real project arrives within roughly two viewport lengths.
+
+The six chapters hold their messages through most of each scroll interval. Large, perspective-transformed screens show the actual portfolio work. Work navigation seeks directly to FillPack. A clear inquiry link remains available in the fixed navigation. Clicking a showcase opens the live website in an accessible dialog, with a direct external link as an alternative.
+
+The renderer limits decoded-frame memory, loads neighboring frames on demand, and retains a static opening poster while frames load. Phone layouts simplify the screen composition and reduce prefetching. With reduced motion, the same story becomes a clear sequence of static cinematic scenes. The **Less motion** control also allows visitors to choose that sequence manually.
+
+## Actual portfolio sources
+
+- FillPack: https://fillpackusa.com/
+- MRBL: https://mrbl-management-website.replit.app
+
+The included screenshots were captured from these supplied live sites. External websites must remain available and permit iframe embedding for the optional interactive dialog.
+
+## Kie.ai visuals
+
+The cinematic film was generated through the official Jobs API with `veo-3-1` / `veo3_fast`, then extracted into a scroll sequence with ffmpeg. The original text prompt and resumable pipeline are in `scripts/generate-film.mjs`.
+
+To intentionally generate a new film, securely configure `KIE_API_KEY`, install ffmpeg with WebP encoding support, and use Node.js 24+:
+
+```sh
+npm run visuals:film -- --new
+```
+
+This consumes Kie.ai credits. Without `--new`, a complete existing sequence is reused. Pending tasks are recorded in ignored `.cache` files and resumed. The command downloads the film without forwarding authorization to the output CDN. TLS verification remains enabled. Node's environment-proxy support handles the cloud proxy.
+
+The script uses `https://api.kie.ai/api/v1/jobs/createTask` and `/recordInfo`. Documentation: https://docs.kie.ai/veo3-api/generate-veo-3-video
+
+The older still-art generators remain in the repository, but the website no longer displays the decorative paper-plane artwork. None of the generation commands runs automatically during installation or startup. Never commit credentials or `.env` files.
+
+## Inquiry delivery — not connected yet
+
+Set `CONTACT_WEBHOOK_URL` to a verified HTTPS destination that accepts POSTed JSON containing `source`, `name`, `email`, `business`, `message`, and `submittedAt`. In the cloud, allow that destination in network settings. The Node API validates fields, limits requests, and reports success only after the destination accepts the message.
+
+Until configured, the form clearly says the inquiry was not sent and offers a local text download. No inquiries are logged or stored locally. Supply verified team details and a public contact option before launch; none has been invented.
 
 ## Production
+
+With Node.js 24+:
 
 ```sh
 npm run build
 npm start
 ```
 
-The production server and Kie.ai scripts require Node.js 24+. The production server defaults to port 3000. Deploy the Node server to retain inquiry delivery. A static-only deployment can display the website but requires a separate `/api/inquiry` implementation to send inquiries.
-
-## Kie.ai visuals
-
-The amber plane was actually generated using `nano-banana-pro`; its background was removed with `recraft/remove-background`. The optimized transparent WebP is included in `public/assets/generated/`, with a provenance manifest. A vector plane remains as the local fallback. Kie.ai is only called server-side; API credentials are never included in the browser bundle.
-
-To intentionally regenerate the artwork, set `KIE_API_KEY` securely in your environment, or in an ignored local `.env` file based on `.env.example`:
-
-```sh
-npm run visuals:generate -- --new
-npm run visuals:cutout
-```
-
-These commands consume Kie.ai credits. Without `--new`, existing artwork is reused. Incomplete tasks are recorded in ignored `.cache` files and resumed rather than submitted again. `KIE_TASK_ID` can also resume a specific generation. Keep `.cache` until pending jobs complete. The scripts preserve TLS verification and support the cloud HTTPS proxy through Node 24's `--use-env-proxy` flag. Never share your `.env` or include it in source control.
-
-Generation uses the official Jobs API at `https://api.kie.ai/api/v1/jobs/createTask` and `/recordInfo`. If an output CDN is blocked, allow its hostname in the environment settings and resume the existing task. The included WebP files are optimized for the website; newly generated PNG files may be optimized before launch.
-
-API references:
-- https://docs.kie.ai/market/google/pro-image-to-image
-- https://docs.kie.ai/market/recraft/remove-background
-
-## Actual portfolio work
-
-Both showcases use screenshots captured from the supplied live websites:
-- FillPack: https://fillpackusa.com/
-- MRBL: https://mrbl-management-website.replit.app
-
-Click a large showcase to interact with the live site in an accessible modal. Each project also has a direct link. Third-party sites must remain available and permit embedding; the external link remains an alternative if embedding is later disabled.
-
-## Inquiry delivery — still needs configuration
-
-Set `CONTACT_WEBHOOK_URL` to your verified **HTTPS** inquiry destination. It must accept POSTed JSON containing `source`, `name`, `email`, `business`, `message`, and `submittedAt`. In the cloud, allow that destination hostname in environment network settings. No inquiry is logged or stored locally. The API validates fields, limits request size and rate, and only reports success after the destination accepts the request.
-
-Until a destination is configured, the form honestly reports that the inquiry was not sent and offers a text download. No direct email or team names have been invented. Supply verified studio team details and a public contact address before launch.
+The Node server defaults to port 3000. Deploy this server to retain inquiry delivery. Static hosting needs its own `/api/inquiry` implementation.
 
 ## Validation
 
@@ -67,16 +77,10 @@ npm run test:browser
 npm run build
 ```
 
-Five API tests verify validation, origin checks, secure webhook requirements, missing delivery configuration, and accepted webhook delivery. Seven Chromium tests cover all scenes, generated artwork, anchor navigation, live project links and modal keyboard behavior, form success and fallback states, responsive overflow at 320/390/768/1440px, and reduced motion. Delivery success is tested against a controlled fixture; a real destination remains unconfigured.
+Eight API/timeline tests verify form validation, secure delivery requirements, honest missing-destination responses, message holds, scroll/frame mapping, and all 192 distinct film assets. Nine Chromium tests check the complete opening, forward/pause/reverse film behavior, direct work navigation, live-site dialog and keyboard focus, reduced motion, manual motion switching, responsive layouts, and form fallback/success states. Successful delivery is tested with a controlled fixture; no real destination has been supplied.
 
-In a fresh local checkout, install the browser for Playwright first:
+On a fresh local machine, run `npx playwright install chromium` before browser tests. The cloud uses `/usr/bin/chromium`; set `PLAYWRIGHT_CHROMIUM_PATH` for another installed browser.
 
-```sh
-npx playwright install chromium
-```
+## Cloud startup
 
-The cloud uses its installed `/usr/bin/chromium`; set `PLAYWRIGHT_CHROMIUM_PATH` to use another installed browser.
-
-## Environment startup
-
-Use the existing checkout at `/workspace/Jurneys`. Cloud tasks are already isolated; no Git worktree is needed. Run `npm ci --cache /workspace/.npm` to restore dependencies, then `npm run dev -- --port 5173`. Restart processes after snapshot restoration. Kie.ai generation is optional and should never run automatically during installation or startup.
+Use the existing `/workspace/Jurneys` checkout; cloud tasks are already isolated, so no Git worktree is needed. Restore dependencies with `npm ci --cache /workspace/.npm`, then run `npm run dev -- --port 5173`. Restart processes after snapshot restoration. No paid generation is needed to start the site.
