@@ -4,6 +4,20 @@ A cinematic, scroll-controlled website studio portfolio. The page is a full-scre
 
 This rebuild replaces the earlier conventional portfolio layout and decorative paper-plane animation. The visual reference is https://sebastien-lempens.com/. JOURNEYS uses original Kie.ai-generated footage and its own compositions; none of the reference site's code, models, imagery, or audio is reused.
 
+## Public browser preview
+
+The GitHub Pages preview is published from `main` by `.github/workflows/pages.yml`:
+
+https://cdywieder-creator.github.io/Jurneys/
+
+The workflow runs the API/timeline checks, builds with the `/Jurneys/` asset prefix, and deploys the static output. The preview includes the complete scrolling film and portfolio interaction. Inquiry delivery is deliberately disabled in this static preview; visitors are told that their message was not sent and can download it instead. No Kie.ai key or server credential is needed to view it.
+
+To reproduce the Pages build locally:
+
+```sh
+VITE_STATIC_PREVIEW=true npm run build -- --base=/Jurneys/
+```
+
 ## View in Replit
 
 Import `https://github.com/cdywieder-creator/Jurneys`, then press **Run** and open **Preview**. The included `.replit` file installs dependencies and starts Vite on port 5173. Node.js 22.12+ or 24+ is required to view the website. All film frames, fonts, and project screenshots are included; viewing needs no Kie.ai key.

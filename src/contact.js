@@ -11,7 +11,9 @@ form.addEventListener('submit', async event => {
   status.textContent = '';
   download.hidden = true;
   try {
-    const response = await fetch('/api/inquiry', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    const response = import.meta.env.VITE_STATIC_PREVIEW === 'true'
+      ? { status: 503 }
+      : await fetch('/api/inquiry', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
     if (response.status === 503 || response.status === 404) {
       status.textContent = 'Inquiry delivery is not connected yet. Your message has not been sent. You can save it below.';
       download.hidden = false;

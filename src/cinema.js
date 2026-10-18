@@ -1,4 +1,5 @@
 import { chapters, clamp, sceneState, frameForProgress, smoothstep } from './timeline.mjs';
+import { asset } from './assets.js';
 
 export function setupCinema() {
   const story = document.querySelector('.film-story');
@@ -175,8 +176,9 @@ export function setupCinema() {
     history.pushState(null, '', link.hash);
     scenes[index].scrollIntoView({ behavior: 'instant', block: 'start' });
   }));
-  fetch('/assets/cinema/manifest.json').then(response => { if (!response.ok) throw new Error('Film manifest unavailable'); return response.json(); }).then(value => {
+  fetch(asset('/assets/cinema/manifest.json')).then(response => { if (!response.ok) throw new Error('Film manifest unavailable'); return response.json(); }).then(value => {
     if (!Array.isArray(value.frames) || value.frameCount !== value.frames.length || value.frameCount < 2 || value.frames.some(path => !path.startsWith('/assets/cinema/frames/'))) throw new Error('Invalid film manifest');
+    value.frames = value.frames.map(asset);
     manifest = value;
     stage.dataset.frameCount = String(value.frameCount);
     if (reading) setReading(true); else { loadFrame(0); requestRender(); }

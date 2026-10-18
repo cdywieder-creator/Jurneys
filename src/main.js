@@ -4,9 +4,10 @@ import './style.css';
 import { setupCinema } from './cinema.js';
 import { setupContact } from './contact.js';
 import { setupProjects } from './projects.js';
+import { asset } from './assets.js';
 
 const arrow = '<svg class="icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const project = (name, interactive = true) => `<div class="site-object site-${name}"><div class="site-chrome"><span class="site-dots"><i></i><i></i><i></i></span><span>${name === 'fillpack' ? 'fillpackusa.com' : 'mrbl-management-website.replit.app'}</span>${arrow}</div>${interactive ? `<button class="project-open" type="button" data-project="${name}" aria-label="Interact with the live ${name === 'fillpack' ? 'FillPack' : 'MRBL'} website">` : ''}<img src="/assets/${name}-live.webp" width="1440" height="1000" alt="Actual ${name === 'fillpack' ? 'FillPack website: private label manufacturing and bulk ingredients' : 'MRBL website: engineered capital solutions'}" ${interactive ? 'loading="lazy"' : ''} />${interactive ? `<span class="project-open-label">Experience the live website ${arrow}</span></button>` : ''}</div>`;
+const project = (name, interactive = true) => `<div class="site-object site-${name}"><div class="site-chrome"><span class="site-dots"><i></i><i></i><i></i></span><span>${name === 'fillpack' ? 'fillpackusa.com' : 'mrbl-management-website.replit.app'}</span>${arrow}</div>${interactive ? `<button class="project-open" type="button" data-project="${name}" aria-label="Interact with the live ${name === 'fillpack' ? 'FillPack' : 'MRBL'} website">` : ''}<img src="${asset(`/assets/${name}-live.webp`)}" width="1440" height="1000" alt="Actual ${name === 'fillpack' ? 'FillPack website: private label manufacturing and bulk ingredients' : 'MRBL website: engineered capital solutions'}" ${interactive ? 'loading="lazy"' : ''} />${interactive ? `<span class="project-open-label">Experience the live website ${arrow}</span></button>` : ''}</div>`;
 
 document.querySelector('#app').innerHTML = `
 <a class="skip-link" href="#contact">Skip to inquiry</a>
@@ -24,7 +25,7 @@ document.querySelector('#app').innerHTML = `
     <div class="chapter-anchor" id="purpose" data-chapter="4"></div>
     <div class="chapter-anchor" id="approach" data-chapter="5"></div>
     <div class="film-stage">
-      <div class="movie-world" aria-hidden="true"><img class="movie-poster" src="/assets/cinema/poster.webp" alt="" fetchpriority="high" width="1280" height="720"><canvas class="movie-canvas"></canvas></div>
+      <div class="movie-world" aria-hidden="true"><img class="movie-poster" src="${asset('/assets/cinema/poster.webp')}" alt="" fetchpriority="high" width="1280" height="720"><canvas class="movie-canvas"></canvas></div>
       <div class="movie-shade" aria-hidden="true"></div><div class="movie-grade" aria-hidden="true"></div><div class="film-grain" aria-hidden="true"></div>
       <div class="stage-topline" aria-hidden="true"><span>THE TAKEOFF</span><span class="current-chapter">01 / READY FOR TAKEOFF</span><span>YOUR NEXT CHAPTER STARTS HERE.</span></div>
       <section class="scene scene-home" data-scene="0" aria-labelledby="hero-title">
